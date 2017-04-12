@@ -84,3 +84,7 @@ a5l.ticketLimit=200
 a5l.orderKeepAlive=15
 # API key for Google Maps
 a5l.googleMapsAPIkey=[CHANGE ME]
+
+a5l.extra.toornament.key=
+a5l.extra.toornament.id=
+a5l.extra.toornament.secret=
