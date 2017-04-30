@@ -2,7 +2,9 @@ package ch.wisv.areafiftylan.utils.logging;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LogServiceImpl implements LogService {
     private LogRepository logRepository;
 
