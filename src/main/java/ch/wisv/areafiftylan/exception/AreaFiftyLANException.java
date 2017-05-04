@@ -2,9 +2,10 @@ package ch.wisv.areafiftylan.exception;
 
 import ch.wisv.areafiftylan.users.model.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 @Slf4j
 public class AreaFiftyLANException extends RuntimeException {
@@ -16,14 +17,14 @@ public class AreaFiftyLANException extends RuntimeException {
         DEBUG(log::debug),
         TRACE(log::trace);
 
-        private final BiConsumer<String, Object> logger;
+        private final Consumer<String> logger;
 
-        LogLevelEnum(BiConsumer<String, Object> logger) {
+        LogLevelEnum(Consumer<String> logger) {
             this.logger = logger;
         }
 
-        public void logMessage(String message, Object object) {
-            logger.accept(message, object);
+        public void logMessage(String message) {
+            logger.accept(message);
         }
     }
 
@@ -32,11 +33,9 @@ public class AreaFiftyLANException extends RuntimeException {
     }
 
     public AreaFiftyLANException(LogLevelEnum logLevel, String message) {
-        this(logLevel, (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal(), message);
-    }
-
-    public AreaFiftyLANException(LogLevelEnum logLevel, User principal , String message) {
         super(message);
-        logLevel.logMessage(message, principal);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String un = auth == null || auth.getName() == null ? "'ANONYMOUS" : auth.getName();
+        logLevel.logMessage("[User: "+un+"] "+message);
     }
 }
