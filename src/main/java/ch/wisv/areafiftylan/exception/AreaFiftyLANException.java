@@ -1,6 +1,5 @@
 package ch.wisv.areafiftylan.exception;
 
-import ch.wisv.areafiftylan.users.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,7 +34,7 @@ public class AreaFiftyLANException extends RuntimeException {
     public AreaFiftyLANException(LogLevelEnum logLevel, String message) {
         super(message);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String un = auth == null || auth.getName() == null ? "'ANONYMOUS" : auth.getName();
+        String un = (auth == null || auth.getName() == null) ? "'ANONYMOUS" : auth.getName();
         logLevel.logMessage("[User: "+un+"] "+message);
     }
 }
